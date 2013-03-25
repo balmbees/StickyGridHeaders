@@ -109,6 +109,7 @@ public class StickyGridHeadersGridView extends GridView implements OnScrollListe
     protected boolean mDataChanged;
     protected int mMotionHeaderPosition;
     protected int mTouchMode;
+    private int mVerticalSpacing;
 
     public StickyGridHeadersGridView(Context context) {
         this(context, null);
@@ -451,6 +452,11 @@ public class StickyGridHeadersGridView extends GridView implements OnScrollListe
     public void setOnScrollListener(OnScrollListener listener) {
         this.mScrollListener = listener;
     }
+    
+    @Override
+    public void setVerticalSpacing(int verticalSpacing) {
+        mVerticalSpacing = verticalSpacing;
+    }
 
     private int findMotionHeader(float y) {
         if (mStickiedHeader != null && y <= mStickiedHeader.getBottom()) {
@@ -719,6 +725,7 @@ public class StickyGridHeadersGridView extends GridView implements OnScrollListe
         // Update adapter with number of columns.
         if (mAdapter != null) {
             mAdapter.setNumColumns(mNumMeasuredColumns);
+            mAdapter.setVerticalSpacing(mVerticalSpacing);
         }
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
