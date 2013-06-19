@@ -26,23 +26,13 @@ import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.view.HapticFeedbackConstants;
-import android.view.MotionEvent;
-import android.view.SoundEffectConstants;
-import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.accessibility.AccessibilityEvent;
-import android.widget.AbsListView;
+import android.widget.*;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.GridView;
-import android.widget.ListAdapter;
-import android.widget.Toast;
-
 import com.tonicartos.stickygridheaders.R;
 import com.tonicartos.widget.stickygridheaders.StickyGridHeadersBaseAdapterWrapper.HeaderFillerView;
 import com.tonicartos.widget.stickygridheaders.StickyGridHeadersBaseAdapterWrapper.ReferenceView;
@@ -56,7 +46,7 @@ import java.util.List;
  * 
  * @author Tonic Artos, Emil Sjölander
  */
-public class StickyGridHeadersGridView extends GridView implements OnScrollListener,
+public class StickyGridHeadersHoloGridView extends org.holoeverywhere.widget.GridView implements OnScrollListener,
         OnItemClickListener, OnItemSelectedListener, OnItemLongClickListener {
     private static final int MATCHED_STICKIED_HEADER = -2;
     private static final int NO_MATCHED_HEADER = -1;
@@ -110,20 +100,20 @@ public class StickyGridHeadersGridView extends GridView implements OnScrollListe
     private Runnable mTouchModeReset;
     private int mTouchSlop;
     private int mVerticalSpacing;
-    protected StickyGridHeadersBaseAdapterWrapper mAdapter;
+    protected StickyGridHeadersHoloAdapterWrapper mAdapter;
     protected boolean mDataChanged;
     protected int mMotionHeaderPosition;
     protected int mTouchMode;
 
-    public StickyGridHeadersGridView(Context context) {
+    public StickyGridHeadersHoloGridView(Context context) {
         this(context, null);
     }
 
-    public StickyGridHeadersGridView(Context context, AttributeSet attrs) {
+    public StickyGridHeadersHoloGridView(Context context, AttributeSet attrs) {
         this(context, attrs, android.R.attr.gridViewStyle);
     }
 
-    public StickyGridHeadersGridView(Context context, AttributeSet attrs, int defStyle) {
+    public StickyGridHeadersHoloGridView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         super.setOnScrollListener(this);
         setVerticalFadingEdgeEnabled(false);
@@ -152,7 +142,7 @@ public class StickyGridHeadersGridView extends GridView implements OnScrollListe
     /**
      * Gets the header at an item position. However, the position must be that
      * of a HeaderFiller.
-     * 
+     *
      * @param position Position of HeaderFiller.
      * @return Header View wrapped in HeaderFiller or null if no header was
      *         found.
@@ -171,7 +161,7 @@ public class StickyGridHeadersGridView extends GridView implements OnScrollListe
 
     /**
      * Get the currently stickied header.
-     * 
+     *
      * @return Current stickied header.
      */
     public View getStickiedHeader() {
@@ -394,7 +384,7 @@ public class StickyGridHeadersGridView extends GridView implements OnScrollListe
             baseAdapter = new StickyGridHeadersListAdapterWrapper(adapter);
         }
 
-        this.mAdapter = new StickyGridHeadersBaseAdapterWrapper(getContext(), this, baseAdapter);
+        this.mAdapter = new StickyGridHeadersHoloAdapterWrapper(getContext(), this, baseAdapter);
         this.mAdapter.registerDataSetObserver(mDataSetObserver);
         reset();
         super.setAdapter(this.mAdapter);
@@ -448,20 +438,20 @@ public class StickyGridHeadersGridView extends GridView implements OnScrollListe
     }
 
     @Override
-    public void setOnItemClickListener(android.widget.AdapterView.OnItemClickListener listener) {
+    public void setOnItemClickListener(OnItemClickListener listener) {
         this.mOnItemClickListener = listener;
         super.setOnItemClickListener(this);
     }
 
     @Override
     public void setOnItemLongClickListener(
-            android.widget.AdapterView.OnItemLongClickListener listener) {
+            OnItemLongClickListener listener) {
         this.mOnItemLongClickListener = listener;
         super.setOnItemLongClickListener(this);
     }
 
     @Override
-    public void setOnItemSelectedListener(android.widget.AdapterView.OnItemSelectedListener listener) {
+    public void setOnItemSelectedListener(OnItemSelectedListener listener) {
         this.mOnItemSelectedListener = listener;
         super.setOnItemSelectedListener(this);
     }
@@ -650,7 +640,7 @@ public class StickyGridHeadersGridView extends GridView implements OnScrollListe
 
     /**
      * Use for interactive debugging on screen.
-     * 
+     *
      * @param text Text to toast to see exactly what is happening where.
      */
     private void showToast(String text) {
@@ -916,7 +906,7 @@ public class StickyGridHeadersGridView extends GridView implements OnScrollListe
      * Constructor called from {@link #CREATOR}
      */
     static class SavedState extends BaseSavedState {
-        public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
+        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
             @Override
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);
